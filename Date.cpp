@@ -45,7 +45,15 @@ void Date::createMonthString()
 
 bool Date::isCorrect() const
 {
-    return true;
+
+    if(m_month >= 1 && m_month <= 12)
+    {
+        if(m_day >= 1 && m_day <= getNumDaysInMonth(this->getMonthEnum()))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 void Date::setDay(unsigned day)
 {
@@ -104,13 +112,13 @@ string Date::getMonthString() const
     return m_stringMonth[(unsigned)(m_month-1)];
 }
 
-bool Date::isBissextile(int year)
+bool Date::isBissextile(int year) const
 {
     
     return !(year%100) ? !(year%400) : !(year%4);
 }
 
-int Date::getNumDaysInMonth(Date::Month month)
+int Date::getNumDaysInMonth(Date::Month month) const
 {
     int numDays = 0;
 
@@ -141,7 +149,7 @@ bool Date::operator<(const Date& date) const
     if(this->m_year == date.getYear() && this->m_month == date.getMonth() && this->m_day == date.getDay())
         return false;
         
-    return isCorrect() && (this->m_year < date.getYear() || this->m_month < date.getMonth() || this->m_day < date.getDay());
+    return (this->isCorrect() && date.isCorrect()) && (this->m_year < date.getYear() || this->m_month < date.getMonth() || this->m_day < date.getDay());
 }
 bool Date::operator>(const Date& date) const
 {
@@ -162,7 +170,7 @@ bool Date::operator>=(const Date& date) const
 
 bool Date::operator==(const Date& date) const
 {
-    return isCorrect() && (this->m_year == date.getYear() && this->m_month == date.getMonth() && this->m_day == date.getDay());
+    return (this->isCorrect() && date.isCorrect() ) && (this->m_year == date.getYear() && this->m_month == date.getMonth() && this->m_day == date.getDay());
 }
 
 
@@ -242,14 +250,6 @@ Date Date::operator+(int val)
     return date;
 }
 
-Date& Date::operator++(int)
-{
-    this->addDay(1);
-
-    return *this;
-}
-
-
 Date Date::operator-(int val)
 {
    Date date(this->m_day,this->m_month,this->m_year);
@@ -259,33 +259,65 @@ Date Date::operator-(int val)
     return date;
 }
 
-Date& Date::operator--(int)
+Date& Date::operator++()
 {
-    this->substractDay(1);
-
+    this->addDay(1);
     return *this;
 }
+
+Date& Date::operator--()
+{
+    this->substractDay(1);
+    return *this;
+}
+
+Date Date::operator++(int)
+{
+    Date temp = *this;
+    temp.addDay(1);
+    return temp;
+}
+
+Date Date::operator--(int)
+{
+    Date temp = *this;
+    temp.substractDay(1);
+    return temp;
+}
+
 ostream& operator<<(ostream& os, const Date& d)
 {
 
-    if(d.isCorrect())
+    if((d.isCorrect()))
         os<<d.m_day<<"."<<d.m_month<<"."<<d.m_year;
     else
-        os<<"Incorrect"<<endl;
+        os<<"Incorrect";
 
     return os;
 }
-/*
-istream& operator>>(istream & is, const string& date)
+
+Date Date::operator>>( string &date)
 {
-    is>>date;
+    
+    cin>>date;
 
     //Separate string in date
-    stringstream ss(date);
+    istringstream ss(date);
     string value;
-    while(ss>>value)
+    
+    unsigned int data[3];
+    int i = 0;
+    while(getline(ss,value,'.'))
     {
+        data[i] = stoi(value,nullptr,10);
+        i++;
 
     }
-    return is;
-}*/
+
+    this->m_day = data[0];
+    this->m_month = data[1];
+    this->m_year = data[2];
+ 
+    return *this;
+
+}

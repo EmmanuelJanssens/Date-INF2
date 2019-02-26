@@ -4,22 +4,21 @@
 #define MONTHS 12
 
 #include <iostream>
+#include<sstream>
 #include <string>
 
 /**
  * @brief 
  * 
- * 
- * 
- * 21/02/2018 : Ajout des fonctions amies pour la commutativité
- * 
- * 
- * A changer les fonctions dériviées de comparaisons
  */
 class Date
 {
     public:
 
+        /**
+         * @brief Enumeration that contains the months in a year
+         * 
+         */
         enum class Month{JANVIER,FEVRIER,MARS,AVRIL,MAI,JUIN,JUILLET,AOUT,SEPTEMBRE,OCTOBRE,NOVEMBRE,DECEMBRE};
 
         /**
@@ -131,13 +130,12 @@ class Date
         friend std::ostream &operator<<(std::ostream& os,const Date& date);
 
         /**
-         * @brief inputs a date dd.mm.yyyy
+         * @brief inputs a date in format dd.mm.yyyy
          * 
          * @param date 
-         * 
-         * @return istream
+         * @return Date 
          */
-        friend std::istream &operator>>(std::istream& is,const std::string& date);
+        Date operator>>( std::string& date);
 
         /**
          * @brief compare two dates
@@ -208,21 +206,26 @@ class Date
          * @return Date 
          */
         Date operator=(const Date& date);
-
+        
         /**
          * @brief Add one day to a day
          * 
          * @return Date 
          */
-        Date &operator++(int);
+        Date &operator++();
+
+
+        Date operator++(int);
+
 
         /**
          * @brief substract one day to a day
          * 
          * @return Date 
          */
-        Date &operator--(int);
+        Date &operator--();
 
+        Date operator--(int);
 
     private:
 
@@ -233,9 +236,12 @@ class Date
          */
         void addDay(int val);
 
+        /**
+         * @brief Substracts a certain value to a date
+         * 
+         * @param val value to be substracted
+         */
         void substractDay(int val);
-
-        void calculateDay(char operation);
 
         /**
          * @brief Insert date in tho the month string array
@@ -258,7 +264,7 @@ class Date
          * @return true 
          * @return false 
          */
-        bool isBissextile(int year);
+        bool isBissextile(int year)const;
 
         /**
          * @brief Get the Num Days In Month object
@@ -266,7 +272,7 @@ class Date
          * @param month 
          * @return int 
          */
-        int getNumDaysInMonth(Month month);
+        int getNumDaysInMonth(Month month)const;
         
         /**
          * @brief An array of strings containing the string value of the monthts
