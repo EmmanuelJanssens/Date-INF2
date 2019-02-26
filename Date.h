@@ -272,7 +272,7 @@ class Date
          * @param month 
          * @return int 
          */
-        int getNumDaysInMonth(Month month);
+        int getNumDaysInMonth(Month month)const;
 
         /**
          * @brief Determines if a month is correctly set or not
