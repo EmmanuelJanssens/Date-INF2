@@ -10,11 +10,17 @@ int main()
  
     Date un(26,2,2019);
     Date deux(25,2,2019);
+    Date faux1(40,2,2019);
+    Date faux2(40,38,2019);
+    Date faux3(2,13,2019);
 
     
     //Operator <<
     cout<<un<<endl;
     cout<<deux<<endl;
+    cout<<faux1<<endl;
+    cout<<faux2<<endl;
+    cout<<faux3<<endl;
 
     //Operator <,>,>=,<=
     cout<<boolalpha;
@@ -45,20 +51,13 @@ int main()
     cout<<add<<endl;
     cout<<sub<<endl;
 
-    //Operator >>
-    cout<<"entrez une date"<<endl;
+    faux1.setDay(2);
+    cout<<faux1<<endl;
+    faux1.setDay(32);
+    cout<<faux1<<endl;
+    faux1.setDay(2);
+    faux1.setMonth(13);
+    cout<<faux1<<endl;
 
-    Date date;
-    string entree;
-
-    
-    date>>entree;
-
-    cout<<"vous avez rentre "<<date<<endl;
-
-    //Operator =
-    cout<<"Operator ="<<endl;
-    Date test = {20,2,20};
-    cout<<test<<endl;
     return 0;
 }

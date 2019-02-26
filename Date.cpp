@@ -15,7 +15,7 @@ Date::Date(unsigned day, unsigned month, unsigned year)
     m_day = day;
     m_month = month;
     m_year = year;
-    m_correct = true;
+    m_correct = validateMonth(month) && validateDay(day, month);
 
     createMonthString();
 
@@ -24,6 +24,7 @@ Date::Date(unsigned day, unsigned month, unsigned year)
 Date::Date(unsigned day, Date::Month month, unsigned year)
     :m_day(day),m_month((unsigned)month),m_year(year)
 {
+    m_correct = validateMonth(m_month) && validateDay(m_day, m_month);
     createMonthString();
 }
 
@@ -45,24 +46,18 @@ void Date::createMonthString()
 
 bool Date::isCorrect() const
 {
-
-    if(m_month >= 1 && m_month <= 12)
-    {
-        if(m_day >= 1 && m_day <= getNumDaysInMonth(this->getMonthEnum()))
-        {
-            return true;
-        }
-    }
-    return false;
+    return m_correct;
 }
 void Date::setDay(unsigned day)
 {
     m_day = day;
+    m_correct = validateDay(m_day, m_month);
 }
 
 void Date::setMonth(unsigned month)
 {
     m_month = month;
+    m_correct = validateMonth(m_month);
 }
 
 void Date::setMonth(string month)
@@ -75,11 +70,13 @@ void Date::setMonth(string month)
             break;
         }
     }
+    m_correct = validateMonth(m_month);
 }
 
 void Date::setMonth(Date::Month month)
 {
     m_month = (unsigned)month;
+    m_correct = validateMonth(m_month);
 }
 
 void Date::setYear(unsigned year)
@@ -143,6 +140,17 @@ int Date::getNumDaysInMonth(Date::Month month) const
    
     return numDays;
 }
+
+bool Date::validateMonth(unsigned int month)
+{
+    return (month >= 1 && month <= 12);
+}
+
+bool Date::validateDay(unsigned int day, unsigned int month)
+{
+    return ((day >= 1 && day <= getNumDaysInMonth((Month) month)));
+}
+
 bool Date::operator<(const Date& date) const
 {
     

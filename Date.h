@@ -272,7 +272,19 @@ class Date
          * @param month 
          * @return int 
          */
-        int getNumDaysInMonth(Month month)const;
+        int getNumDaysInMonth(Month month);
+
+        /**
+         * @brief Determines if a month is correctly set or not
+         *
+         */
+        bool validateMonth(unsigned int month);
+
+        /**
+         * @brief Determines if a day is correctly set or not
+         *
+         */
+         bool validateDay(unsigned int day, unsigned int month);
         
         /**
          * @brief An array of strings containing the string value of the monthts
